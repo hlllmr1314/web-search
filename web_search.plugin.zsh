@@ -7,7 +7,25 @@ function web_search() {
   [[ "$OSTYPE" = linux* ]] && open_cmd='xdg-open'
   [[ "$OSTYPE" = darwin* ]] && open_cmd='open'
 
-  pattern='(google|duckduckgo|bing|yahoo|github|youtube|baidu)'
+  pattern='(google|duckduckgo|bing|yahoo|github|youtube|baidu|xcserver|ciserver|jira|confluence)'
+
+  if [[ "$1" == 'xcserver' ]]; then
+    url="http:xcserver:8080/"
+    $open_cmd "$url"
+    return
+  fi
+
+  if [[ "$1" == 'ciserver' ]]; then
+    url="http:ciserver:8080/"
+    $open_cmd "$url"
+    return
+  fi
+
+  # if [[ "$1" == 'confluence' ]]; then
+  #   url="https://confluence.ecarx.com.cn"
+  #   $open_cmd "$url"
+  #   return
+  # fi
 
   # check whether the search engine is supported
   if [[ $1 =~ pattern ]];
@@ -17,7 +35,15 @@ function web_search() {
   fi
 
   local url
-  [[ "$1" == 'yahoo' ]] && url="https://search.yahoo.com" || url="https://www.$1.com"
+  ([[ "$1" == 'yahoo' ]] && url="https://search.yahoo.com") || url="https://www.$1.com"
+  
+  if [[ "$1" == 'jira' ]]; then
+    url="https://jira.ecarx.com.cn"
+  fi
+
+   if [[ "$1" == 'confluence' ]]; then
+    url="https://confluence.ecarx.com.cn"
+  fi
 
   # no keyword provided, simply open the search engine homepage
   if [[ $# -le 1 ]]; then
@@ -33,6 +59,8 @@ function web_search() {
     yahoo      "/search?p="
     youtube    "/results?search_query="
     baidu      "/s?wd="
+    jira       "/browse/"
+    confluence "/dosearchsite.action?queryString="
   )
 
   url="${url}${search_syntax[$1]}"
@@ -54,6 +82,9 @@ alias ddg='web_search duckduckgo'
 alias github='web_search github'
 alias youtube='web_search youtube'
 alias baidu='web_search baidu'
+alias xcserver='web_search xcserver'
+alias jira='web_search jira'
+alias confluence='web_search confluence'
 
 #add your own !bang searches here
 alias wiki='web_search duckduckgo \!w'
