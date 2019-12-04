@@ -7,7 +7,7 @@ function web_search() {
   [[ "$OSTYPE" = linux* ]] && open_cmd='xdg-open'
   [[ "$OSTYPE" = darwin* ]] && open_cmd='open'
 
-  pattern='(google|duckduckgo|bing|yahoo|github|youtube)'
+  pattern='(google|duckduckgo|bing|yahoo|github|youtube|baidu)'
 
   # check whether the search engine is supported
   if [[ $1 =~ pattern ]];
@@ -32,6 +32,7 @@ function web_search() {
     duckduckgo "/?q="
     yahoo      "/search?p="
     youtube    "/results?search_query="
+    baidu      "/s?wd="
   )
 
   url="${url}${search_syntax[$1]}"
@@ -52,6 +53,7 @@ alias yahoo='web_search yahoo'
 alias ddg='web_search duckduckgo'
 alias github='web_search github'
 alias youtube='web_search youtube'
+alias baidu='web_search baidu'
 
 #add your own !bang searches here
 alias wiki='web_search duckduckgo \!w'
